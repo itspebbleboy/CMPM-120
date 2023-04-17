@@ -14,6 +14,17 @@ function shuffleArray(targetArray){
     return shuffled;
 }
 
+function diceRoller(times,sides){
+    let results = [];
+    for (let i=0; i<times; i++){
+        results.push(Math.floor(Math.random()*sides+1));
+    }
+    return results;
+}
+
+function sumArrayElems(array){
+    return array.reduce((total, currentNumber) => total + currentNumber);
+}
 class Player{
     constructor(charName ='Naruto'){ //naruto = default parameter
         this.name = charName;
@@ -30,11 +41,22 @@ class Player{
 
 
     rollAttr(){
-        console.log ('rolling dice ...');
+        for(const key in this.attributes){
+            let results= diceRoller(4,6);
+            results.sort(function(a,b){return a-b}); //numeric sort w/ comp fucntion
+            results.shift(); // remove lowest die roll
+            let sum = sumArrayElems(results);
+            this.attributes[key] = sum;
+        }
+
+
+
     }
-    printPlayer(){
-        console.log(this.name);
-        console.log(this.attributes);
+    printPlayer() {
+        console.log(`NAME: ${this.name}`);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            console.log(`${key.slice(0, 3).toUpperCase()}: ${value}`);
+        }
     }
 }
 
